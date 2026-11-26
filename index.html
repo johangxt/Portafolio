@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portafolio · Johan</title>
+  <meta name="description" content="Portafolio de Johan: diseño, video y proyectos." />
+  <meta property="og:title" content="Portafolio · Johan" />
+  <meta property="og:image" content="media/imagen-1-thumb.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Caveat+Brush&family=Gochi+Hand&family=Permanent+Marker&family=Rubik+Mono+One&family=Rubik+Wet+Paint&family=Shrikhand&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --board: #161616;
+      --chalk: #f4f1ea;
+      --pink: #ff1f8f;
+      --yellow: #ffe433;
+      --blue: #1fb6ff;
+      --green: #35c24a;
+      --red: #ff3b30;
+      --purple: #a24bd8;
+      --orange: #ff8a1f;
+      --wood: #8a5a3b;
+      --wood-dark: #5e3b25;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--board);
+      color: var(--chalk);
+      font-family: "Gochi Hand", cursive;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Textura de pizarra (ruido + manchas de tiza) */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(255,255,255,.07), transparent 45%),
+        radial-gradient(ellipse at 80% 70%, rgba(255,255,255,.05), transparent 50%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    main, header, footer { position: relative; z-index: 2; }
+
+    /* ---------- Doodles de crayola ---------- */
+    .doodle {
+      position: absolute; z-index: 1; pointer-events: none;
+      filter: url(#crayon);
+      animation: floaty 7s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+      50% { transform: translateY(-12px) rotate(calc(var(--r, 0deg) + 6deg)); }
+    }
+
+    /* ---------- Navegación ---------- */
+    nav {
+      display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center;
+      padding: 1.6rem 1rem 0;
+    }
+    nav a {
+      font-family: "Rubik Mono One", sans-serif;
+      font-size: .85rem; letter-spacing: .04em;
+      color: #fff; text-decoration: none; text-transform: uppercase;
+      background: var(--pink);
+      padding: .6rem 1.4rem; border-radius: 999px;
+      transition: transform .2s, background .2s;
+    }
+    nav a:nth-child(2) { transform: rotate(-3deg); background: var(--blue); }
+    nav a:nth-child(3) { transform: rotate(2deg); background: var(--green); }
+    nav a:nth-child(4) { transform: rotate(-2deg); background: var(--orange); }
+    nav a:hover, nav a:focus-visible { transform: scale(1.12) rotate(0deg); outline: none; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      min-height: 78vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 3rem 1rem 2rem;
+    }
+    .crayon-title {
+      font-size: clamp(3rem, 12vw, 9rem);
+      line-height: 1; letter-spacing: .01em;
+      filter: url(#roughen);
+    }
+    .crayon-title span { display: inline-block; transition: transform .25s; }
+    .crayon-title span:hover { transform: translateY(-8px) rotate(6deg) scale(1.1); }
+    .year {
+      font-family: "Permanent Marker", cursive;
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      color: var(--yellow);
+      margin-top: .4rem;
+      transform: rotate(-3deg);
+    }
+    .subtitle { margin-top: 1.4rem; max-width: 34rem; opacity: .9; }
+
+    /* ---------- Secciones ---------- */
+    section { padding: 4rem 1.2rem; max-width: 1100px; margin: 0 auto; position: relative; }
+    .section-title {
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      text-align: center; margin-bottom: .6rem;
+      filter: url(#roughen);
+    }
+    .section-title span { display: inline-block; }
+    .section-note { text-align: center; opacity: .8; margin-bottom: 3rem; }
+
+    /* ---------- Biblioteca ---------- */
+    .shelf-block { margin-bottom: 3.5rem; }
+    .shelf-label {
+      font-family: "Permanent Marker", cursive;
+      font-size: 1.4rem; color: var(--yellow);
+      margin: 0 0 .4rem .6rem;
+      transform: rotate(-1.5deg);
+      display: inline-block;
+    }
+    .shelf {
+      display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end;
+      gap: 2.2rem 2.6rem;
+      padding: 1.5rem 1.5rem 0;
+      position: relative;
+    }
+    /* La tabla de madera */
+    .shelf::after {
+      content: ""; display: block; width: 100%; height: 22px;
+      position: absolute; left: 0; bottom: -22px;
+      background: linear-gradient(180deg, #a06e4a, var(--wood) 40%, var(--wood-dark));
+      border-radius: 4px;
+      box-shadow: 0 14px 22px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,255,255,.18);
+    }
+    .shelf-spacer { height: 22px; }
+
+    .item {
+      all: unset; cursor: pointer; display: block; position: relative;
+      width: clamp(150px, 26vw, 230px);
+      transform: rotate(var(--tilt, 0deg));
+      transform-origin: bottom center;
+      transition: transform .25s cubic-bezier(.3,1.6,.5,1), filter .25s;
+      margin-bottom: 0;
+    }
+    .item:hover, .item:focus-visible {
+      transform: rotate(0deg) translateY(-14px) scale(1.05);
+      filter: drop-shadow(0 12px 16px rgba(0,0,0,.6));
+    }
+    .item:focus-visible .cover { outline: 4px dashed var(--yellow); outline-offset: 4px; }
+
+    .cover {
+      display: block; position: relative;
+      background: #fff; padding: 8px 8px 8px;
+      border-radius: 6px;
+      box-shadow: 0 6px 0 var(--accent, var(--pink)), 0 10px 18px rgba(0,0,0,.5);
+      aspect-ratio: 3 / 4;
+    }
+    .cover img {
+      width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 3px;
+    }
+    .item.video .cover { aspect-ratio: 16 / 10; }
+
+    .badge {
+      position: absolute; top: -12px; right: -12px;
+      font-family: "Bungee", sans-serif; font-size: .8rem;
+      background: var(--accent, var(--pink)); color: #fff;
+      padding: .25rem .6rem; border-radius: 999px;
+      transform: rotate(8deg);
+    }
+    .play {
+      position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+    }
+    .play::before {
+      content: ""; width: 58px; height: 58px; border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      box-shadow: 0 0 0 3px #fff;
+    }
+    .play::after {
+      content: ""; position: absolute;
+      border-style: solid; border-width: 12px 0 12px 20px;
+      border-color: transparent transparent transparent #fff;
+      margin-left: 5px;
+    }
+    .caption {
+      display: block; text-align: center; margin-top: 1rem;
+      font-family: "Caveat Brush", cursive; font-size: 1.5rem; line-height: 1.1;
+      color: var(--chalk);
+    }
+
+    /* ---------- Sobre mí ---------- */
+    .about {
+      display: grid; gap: 2rem; grid-template-columns: 1fr; align-items: center;
+    }
+    @media (min-width: 800px) { .about { grid-template-columns: 1fr 1fr; } }
+    .about-card {
+      border: 3px dashed var(--chalk); border-radius: 18px; padding: 1.6rem;
+      transform: rotate(-1deg);
+      background: rgba(255,255,255,.03);
+    }
+    .about-card h3 {
+      font-family: "Permanent Marker", cursive; color: var(--yellow);
+      font-size: 1.8rem; margin-bottom: .6rem; font-weight: normal;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+    .tag {
+      font-family: "Rubik Mono One", sans-serif; font-size: .75rem; text-transform: uppercase;
+      padding: .45rem .9rem; border-radius: 999px; color: #111; background: var(--c);
+      transform: rotate(var(--r));
+    }
+
+    /* ---------- Contacto ---------- */
+    .contact { text-align: center; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1.6rem; }
+    .contact-links a {
+      font-family: "Rubik Mono One", sans-serif; font-size: .9rem; text-transform: uppercase;
+      color: #fff; text-decoration: none; padding: .8rem 1.6rem; border-radius: 999px;
+      background: var(--c); transition: transform .2s;
+    }
+    .contact-links a:hover { transform: scale(1.1) rotate(-3deg); }
+
+    footer { text-align: center; padding: 2.5rem 1rem 3rem; opacity: .6; font-size: 1rem; }
+
+    /* ---------- Lightbox ---------- */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(10,10,10,.92);
+      display: none; align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .lightbox.open { display: flex; animation: fade .2s ease; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+    .stage {
+      max-width: min(1100px, 100%); max-height: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: .8rem;
+    }
+    .stage img, .stage video {
+      max-width: 100%; max-height: 78vh; border-radius: 8px;
+      border: 6px solid #fff; background: #000;
+      box-shadow: 0 0 0 4px var(--accent, var(--pink)), 0 20px 50px rgba(0,0,0,.7);
+    }
+    .stage .lb-title { font-family: "Caveat Brush", cursive; font-size: 1.8rem; text-align: center; }
+    .stage .lb-desc { opacity: .8; text-align: center; max-width: 40rem; }
+    .lb-btn {
+      position: absolute; background: var(--pink); color: #fff; border: 0; cursor: pointer;
+      font-family: "Rubik Mono One", sans-serif; font-size: 1.1rem;
+      width: 52px; height: 52px; border-radius: 50%;
+      transition: transform .2s;
+    }
+    .lb-btn:hover, .lb-btn:focus-visible { transform: scale(1.15); outline: none; }
+    .lb-close { top: 1rem; right: 1rem; background: var(--red); }
+    .lb-prev { left: 1rem; top: 50%; translate: 0 -50%; background: var(--blue); }
+    .lb-next { right: 1rem; top: 50%; translate: 0 -50%; background: var(--green); }
+    @media (max-width: 600px) {
+      .lb-prev, .lb-next { top: auto; bottom: 1rem; translate: 0 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Filtros SVG que dan el efecto "crayola" -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="crayon" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="3" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="5" />
+      </filter>
+      <filter id="roughen" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="8" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3" />
+      </filter>
+
+      <symbol id="flower" viewBox="0 0 100 100">
+        <g fill="currentColor">
+          <circle cx="50" cy="20" r="17" /><circle cx="80" cy="42" r="17" />
+          <circle cx="68" cy="78" r="17" /><circle cx="32" cy="78" r="17" />
+          <circle cx="20" cy="42" r="17" />
+        </g>
+        <circle cx="50" cy="50" r="13" fill="#ffe433" />
+      </symbol>
+      <symbol id="star" viewBox="0 0 100 100">
+        <polygon fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"
+          points="50,8 61,38 93,38 67,57 77,90 50,70 23,90 33,57 7,38 39,38" />
+      </symbol>
+      <symbol id="asterisk" viewBox="0 0 100 100">
+        <g stroke="currentColor" stroke-width="8" stroke-linecap="round">
+          <line x1="50" y1="8" x2="50" y2="92" /><line x1="14" y1="30" x2="86" y2="70" /><line x1="14" y1="70" x2="86" y2="30" />
+        </g>
+      </symbol>
+      <symbol id="sun" viewBox="0 0 120 120">
+        <g stroke="currentColor" stroke-width="8" stroke-linecap="round" fill="none">
+          <path d="M60 60 m0 -6 a6 6 0 1 1 -6 6 a14 14 0 1 1 14 14 a24 24 0 1 1 -24 -24" stroke="#ffe433" />
+          <line x1="60" y1="6" x2="60" y2="20" /><line x1="60" y1="100" x2="60" y2="114" />
+          <line x1="6" y1="60" x2="20" y2="60" /><line x1="100" y1="60" x2="114" y2="60" />
+          <line x1="22" y1="22" x2="32" y2="32" /><line x1="88" y1="88" x2="98" y2="98" />
+          <line x1="22" y1="98" x2="32" y2="88" /><line x1="88" y1="32" x2="98" y2="22" />
+        </g>
+      </symbol>
+      <symbol id="squiggle" viewBox="0 0 200 40">
+        <path d="M5 20 q 15 -25 30 0 t 30 0 t 30 0 t 30 0 t 30 0 t 30 0"
+          fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Doodles decorativos -->
+  <svg class="doodle" style="top:6%; left:4%; width:110px; color:#1fb6ff; --r:-8deg"><use href="#sun" /></svg>
+  <svg class="doodle" style="top:12%; right:5%; width:90px; color:#fff; --r:10deg; animation-delay:-2s"><use href="#flower" /></svg>
+  <svg class="doodle" style="top:48%; left:6%; width:70px; color:#ff1f8f; --r:0deg; animation-delay:-4s"><use href="#asterisk" /></svg>
+  <svg class="doodle" style="top:38%; right:7%; width:80px; color:#ffe433; --r:14deg; animation-delay:-1s"><use href="#star" /></svg>
+  <svg class="doodle" style="top:72%; right:4%; width:100px; color:#35c24a; --r:-5deg; animation-delay:-3s"><use href="#flower" /></svg>
+  <svg class="doodle" style="top:88%; left:5%; width:160px; height:32px; color:#1fb6ff; --r:0deg; animation-delay:-5s"><use href="#squiggle" /></svg>
+
+  <header>
+    <nav aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#biblioteca">Biblioteca</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <div class="hero" id="inicio">
+      <h1 class="crayon-title" data-crayon="PORTAFOLIO">PORTAFOLIO</h1>
+      <p class="year">2026</p>
+      <p class="subtitle">Una biblioteca de cosas que he hecho. Haz clic en cualquier pieza para abrirla.</p>
+    </div>
+
+    <!-- BIBLIOTECA -->
+    <section id="biblioteca">
+      <h2 class="section-title" data-crayon="BIBLIOTECA">BIBLIOTECA</h2>
+      <p class="section-note">Dos estantes: uno de imágenes y otro de videos.</p>
+
+      <div class="shelf-block">
+        <span class="shelf-label">Estante 1 · Imágenes</span>
+        <div class="shelf" id="shelf-images"></div>
+        <div class="shelf-spacer"></div>
+      </div>
+
+      <div class="shelf-block">
+        <span class="shelf-label">Estante 2 · Videos</span>
+        <div class="shelf" id="shelf-videos"></div>
+        <div class="shelf-spacer"></div>
+      </div>
+    </section>
+
+    <!-- SOBRE MÍ -->
+    <section id="sobre-mi">
+      <h2 class="section-title" data-crayon="SOBRE MÍ">SOBRE MÍ</h2>
+      <div class="about">
+        <div class="about-card">
+          <h3>¡Hola, soy Johan!</h3>
+          <!-- ✏️ EDITA ESTE TEXTO CON TUS PALABRAS -->
+          <p>
+            Estudio Ingeniería de Sistemas en la Universidad Cooperativa de Colombia, en Bogotá.
+            Me muevo entre el código, el diseño gráfico y el diseño de interfaces (UI/UX), y me gusta
+            crear cosas útiles y bonitas para la comunidad.
+          </p>
+          <div class="tags">
+            <span class="tag" style="--c:#ffe433; --r:-3deg">Diseño gráfico</span>
+            <span class="tag" style="--c:#1fb6ff; --r:2deg">UI/UX</span>
+            <span class="tag" style="--c:#35c24a; --r:-2deg">Desarrollo web</span>
+            <span class="tag" style="--c:#ff1f8f; --r:3deg">Comunidad</span>
+          </div>
+        </div>
+        <div class="about-card" style="transform: rotate(1.2deg)">
+          <h3>¿Qué encontrarás aquí?</h3>
+          <p>
+            Afiches y piezas gráficas, además de videos de proyectos y momentos.
+            Cada pieza se abre en grande al hacer clic.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="contact">
+      <h2 class="section-title" data-crayon="CONTACTO">CONTACTO</h2>
+      <p>¿Quieres trabajar conmigo o tienes una idea? Escríbeme.</p>
+      <div class="contact-links">
+        <!-- ✏️ CAMBIA ESTOS ENLACES POR LOS TUYOS -->
+        <a href="mailto:tucorreo@ejemplo.com" style="--c:#ff1f8f">Correo</a>
+        <a href="https://www.linkedin.com/in/tu-usuario" target="_blank" rel="noopener" style="--c:#1fb6ff">LinkedIn</a>
+        <a href="https://www.instagram.com/tu_usuario" target="_blank" rel="noopener" style="--c:#a24bd8">Instagram</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Johan · Hecho con crayolas y código</footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visor de contenido">
+    <button class="lb-btn lb-close" id="lb-close" aria-label="Cerrar">✕</button>
+    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Anterior">‹</button>
+    <button class="lb-btn lb-next" id="lb-next" aria-label="Siguiente">›</button>
+    <div class="stage" id="stage"></div>
+  </div>
+
+  <script>
+    /* =========================================================
+       ✏️ AQUÍ EDITAS TU CONTENIDO
+       - type: "image" o "video"
+       - thumb: miniatura que se ve en el estante
+       - src: archivo que se abre al hacer clic
+       ========================================================= */
+    const WORKS = [
+      { type: "image", title: "City Limpiadas", desc: "Afiche para el evento.",
+        thumb: "media/imagen-1-thumb.jpg", src: "media/imagen-1.jpg", accent: "#ffe433", tilt: -3 },
+      { type: "image", title: "Terrarium", desc: "Afiche del taller de terrarios.",
+        thumb: "media/imagen-2-thumb.jpg", src: "media/imagen-2.jpg", accent: "#35c24a", tilt: 2 },
+      { type: "image", title: "Foto", desc: "",
+        thumb: "media/imagen-3-thumb.jpg", src: "media/imagen-3.jpg", accent: "#ff1f8f", tilt: -1.5 },
+
+      { type: "video", title: "Video 1", desc: "",
+        thumb: "media/video-1-thumb.jpg", src: "media/video-1.mp4", accent: "#1fb6ff", tilt: 2 },
+      { type: "video", title: "Video 2", desc: "",
+        thumb: "media/video-2-thumb.jpg", src: "media/video-2.mp4", accent: "#a24bd8", tilt: -2.5 },
+      { type: "video", title: "Video 3", desc: "",
+        thumb: "media/video-3-thumb.jpg", src: "media/video-3.mp4", accent: "#ff8a1f", tilt: 1.5 },
+    ];
+
+    /* ---------- Letras de colores / tipografías mezcladas ---------- */
+    const FONTS = ["Rubik Mono One", "Permanent Marker", "Bungee", "Shrikhand", "Rubik Wet Paint", "Caveat Brush"];
+    const COLORS = ["#ffffff", "#ffe433", "#ff1f8f", "#1fb6ff", "#35c24a", "#ff3b30", "#a24bd8", "#ff8a1f"];
+
+    document.querySelectorAll("[data-crayon]").forEach((el, idx) => {
+      const text = el.dataset.crayon;
+      el.textContent = "";
+      el.setAttribute("aria-label", text);
+      [...text].forEach((ch, i) => {
+        if (ch === " ") { el.appendChild(document.createTextNode("\u00A0")); return; }
+        const s = document.createElement("span");
+        s.textContent = ch;
+        s.setAttribute("aria-hidden", "true");
+        s.style.fontFamily = `"${FONTS[(i + idx * 2) % FONTS.length]}", sans-serif`;
+        s.style.color = COLORS[(i * 3 + idx) % COLORS.length];
+        s.style.transform = `rotate(${((i * 7 + idx * 3) % 11) - 5}deg) translateY(${((i * 5) % 9) - 4}px)`;
+        el.appendChild(s);
+      });
+    });
+
+    /* ---------- Construir los estantes ---------- */
+    const shelfImages = document.getElementById("shelf-images");
+    const shelfVideos = document.getElementById("shelf-videos");
+
+    WORKS.forEach((w, i) => {
+      const btn = document.createElement("button");
+      btn.className = `item ${w.type}`;
+      btn.style.setProperty("--tilt", `${w.tilt || 0}deg`);
+      btn.style.setProperty("--accent", w.accent || "#ff1f8f");
+      btn.setAttribute("aria-label", `Abrir ${w.type === "video" ? "video" : "imagen"}: ${w.title}`);
+      btn.innerHTML = `
+        <span class="cover">
+          <img src="${w.thumb}" alt="${w.title}" loading="lazy" />
+          ${w.type === "video" ? '<span class="play"></span><span class="badge">VIDEO</span>' : ""}
+        </span>
+        <span class="caption">${w.title}</span>`;
+      btn.addEventListener("click", () => openLightbox(i));
+      (w.type === "video" ? shelfVideos : shelfImages).appendChild(btn);
+    });
+
+    /* ---------- Lightbox ---------- */
+    const lb = document.getElementById("lightbox");
+    const stage = document.getElementById("stage");
+    let current = 0;
+    let lastFocus = null;
+
+    function render(i) {
+      current = (i + WORKS.length) % WORKS.length;
+      const w = WORKS[current];
+      stage.innerHTML = "";
+      stage.style.setProperty("--accent", w.accent || "#ff1f8f");
+
+      let media;
+      if (w.type === "video") {
+        media = document.createElement("video");
+        media.src = w.src;
+        media.poster = w.thumb;
+        media.controls = true;
+        media.autoplay = true;
+        media.playsInline = true;
+      } else {
+        media = document.createElement("img");
+        media.src = w.src;
+        media.alt = w.title;
+      }
+      stage.appendChild(media);
+
+      const t = document.createElement("div");
+      t.className = "lb-title";
+      t.textContent = w.title;
+      stage.appendChild(t);
+
+      if (w.desc) {
+        const d = document.createElement("div");
+        d.className = "lb-desc";
+        d.textContent = w.desc;
+        stage.appendChild(d);
+      }
+    }
+
+    function openLightbox(i) {
+      lastFocus = document.activeElement;
+      render(i);
+      lb.classList.add("open");
+      document.body.style.overflow = "hidden";
+      document.getElementById("lb-close").focus();
+    }
+
+    function closeLightbox() {
+      const v = stage.querySelector("video");
+      if (v) v.pause();
+      stage.innerHTML = "";
+      lb.classList.remove("open");
+      document.body.style.overflow = "";
+      if (lastFocus) lastFocus.focus();
+    }
+
+    document.getElementById("lb-close").addEventListener("click", closeLightbox);
+    document.getElementById("lb-prev").addEventListener("click", () => render(current - 1));
+    document.getElementById("lb-next").addEventListener("click", () => render(current + 1));
+    lb.addEventListener("click", (e) => { if (e.target === lb) closeLightbox(); });
+
+    document.addEventListener("keydown", (e) => {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") render(current - 1);
+      if (e.key === "ArrowRight") render(current + 1);
+    });
+  </script>
+</body>
+</html>
