@@ -5,12 +5,12 @@
    - sticker: garabato que se pega en la esquina → flower, star, sparkle, asterisk, daisy, spiral
    ========================================================= */
 const WORKS = [
-  { type: "image", title: "City Limpiadas", desc: "Afiche para el evento.", thumb: "media/imagen-1-thumb.jpg", src: "media/imagen-1.jpg", accent: "#ffe433", tilt: -3, shape: "torn", sticker: "flower" },
-  { type: "image", title: "Terrarium", desc: "Afiche del taller de terrarios.", thumb: "media/imagen-2-thumb.jpg", src: "media/imagen-2.jpg", accent: "#35c24a", tilt: 2, shape: "blob", sticker: "star" },
-  { type: "image", title: "Foto", desc: "", thumb: "media/imagen-3-thumb.jpg", src: "media/imagen-3.jpg", accent: "#ff1f8f", tilt: -1.5, shape: "arch", sticker: "sparkle" },
-  { type: "video", title: "Video 1", desc: "", thumb: "media/video-1-thumb.jpg", src: "media/video-1.mp4", accent: "#1fb6ff", tilt: 2, shape: "pill", sticker: "asterisk" },
-  { type: "video", title: "Video 2", desc: "", thumb: "media/video-2-thumb.jpg", src: "media/video-2.mp4", accent: "#a24bd8", tilt: -2.5, shape: "torn", sticker: "daisy" },
-  { type: "video", title: "Video 3", desc: "", thumb: "media/video-3-thumb.jpg", src: "media/video-3.mp4", accent: "#ff8a1f", tilt: 1.5, shape: "blob", sticker: "star" },
+  { type: "image", title: "City Limpiadas", desc: "Flyer para el evento.", thumb: "media/imagen-1-thumb.jpg", src: "media/imagen-1.jpg", accent: "#ffe433", tilt: -3, shape: "torn", sticker: "flower" },
+  { type: "image", title: "Terrarium", desc: "Flyer del taller de terrarios.", thumb: "media/imagen-2-thumb.jpg", src: "media/imagen-2.jpg", accent: "#35c24a", tilt: 2, shape: "blob", sticker: "star" },
+  { type: "image", title: "Simbita", desc: "", thumb: "media/imagen-3-thumb.jpg", src: "media/imagen-3.jpg", accent: "#ff1f8f", tilt: -1.5, shape: "arch", sticker: "sparkle" },
+  { type: "video", title: "Simbis", desc: "", thumb: "media/video-1-thumb.jpg", src: "media/video-1.mp4", accent: "#1fb6ff", tilt: 2, shape: "pill", sticker: "asterisk" },
+  { type: "video", title: "Visita al Cementerio Central", desc: "", thumb: "media/video-2-thumb.jpg", src: "media/video-2.mp4", accent: "#a24bd8", tilt: -2.5, shape: "torn", sticker: "daisy" },
+  { type: "video", title: "Terrarium", desc: "", thumb: "media/video-3-thumb.jpg", src: "media/video-3.mp4", accent: "#ff8a1f", tilt: 1.5, shape: "blob", sticker: "star" },
 ];
 
 /* ---------- Garabatos grandes por sección (s = velocidad de parallax) ---------- */
